@@ -107,6 +107,32 @@ async def stance(
     await interaction.response.send_message(embed=embed)
 
 
+@tree.command(name="stage", description="Erstellt eine Stage-Tuning Dokumentation")
+@app_commands.describe(
+    kunde="Name des Kunden",
+    kennzeichen="Das Kennzeichen des Autos",
+    bild="Lade ein Bild hoch",
+    stage="Stage-Stufe, z.B. Stage 1"
+)
+async def stage(
+    interaction: discord.Interaction,
+    kunde: str,
+    kennzeichen: str,
+    bild: discord.Attachment,
+    stage: str
+):
+    mitarbeiter = interaction.user
+    embed = discord.Embed(title="Stage-Tuning Dokumentation", color=discord.Color.gold())
+    embed.add_field(name="Kunde", value=kunde, inline=True)
+    embed.add_field(name="Kennzeichen", value=kennzeichen, inline=True)
+    embed.add_field(name="Stage", value=stage, inline=True)
+    embed.add_field(name="Bearbeitet von", value=mitarbeiter.mention, inline=True)
+    embed.set_image(url=bild.url)
+    zeit = datetime.datetime.now().strftime("%d.%m.%Y %H:%M")
+    embed.set_footer(text=f"Dokumentations-ID: #342 • {zeit}")
+    await interaction.response.send_message(embed=embed)
+
+
 @tree.command(name="abmelden", description="Melde dich für einen Zeitraum ab")
 @app_commands.describe(
     grund="Warum meldest du dich ab?",
@@ -139,6 +165,7 @@ async def help_command(interaction: discord.Interaction):
     embed.add_field(name="/info", value="Show bot information", inline=False)
     embed.add_field(name="/xenon", value="Erstellt einen Xenon-Eintrag (Kunde, Kennzeichen, Farbe, Bild)", inline=False)
     embed.add_field(name="/stance", value="Erstellt einen Stance-Eintrag (Kunde, Kennzeichen, Bild)", inline=False)
+    embed.add_field(name="/stage", value="Erstellt einen Stage-Tuning-Eintrag (Kunde, Kennzeichen, Stage, Bild)", inline=False)
     embed.add_field(name="/abmelden", value="Melde dich für einen Zeitraum ab (Grund, Von, Bis)", inline=False)
     embed.add_field(name="/help", value="Show this help message", inline=False)
     await interaction.response.send_message(embed=embed)
