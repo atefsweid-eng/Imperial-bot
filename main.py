@@ -3,7 +3,10 @@ from discord import app_commands
 import os
 import random
 import datetime
+from zoneinfo import ZoneInfo
 from server import stay_alive
+
+BOT_TIMEZONE = ZoneInfo("Europe/Berlin")
 
 intents = discord.Intents.default()
 client = discord.Client(intents=intents)
@@ -72,6 +75,7 @@ async def xenon(
     farbe: str,
     bild: discord.Attachment
 ):
+    await interaction.response.defer(thinking=True)
     mitarbeiter = interaction.user
     embed = discord.Embed(title="Xenon-Scheinwerfer Dokumentation", color=discord.Color.green())
     embed.add_field(name="Kunde", value=kunde, inline=True)
@@ -79,9 +83,9 @@ async def xenon(
     embed.add_field(name="Xenon-Farbe", value=farbe, inline=True)
     embed.add_field(name="Bearbeitet von", value=mitarbeiter.mention, inline=False)
     embed.set_image(url=bild.url)
-    zeit = datetime.datetime.now().strftime("%d.%m.%Y %H:%M")
+    zeit = datetime.datetime.now(BOT_TIMEZONE).strftime("%d.%m.%Y %H:%M")
     embed.set_footer(text=f"Dokumentations-ID: #239 • {zeit}")
-    await interaction.response.send_message(embed=embed)
+    await interaction.edit_original_response(embed=embed)
 
 
 @tree.command(name="stance", description="Erstellt eine Stance-Tuning Dokumentation")
@@ -96,15 +100,16 @@ async def stance(
     kennzeichen: str,
     bild: discord.Attachment
 ):
+    await interaction.response.defer(thinking=True)
     mitarbeiter = interaction.user
     embed = discord.Embed(title="Stance-Tuning Dokumentation", color=discord.Color.dark_magenta())
     embed.add_field(name="Kunde", value=kunde, inline=True)
     embed.add_field(name="Kennzeichen", value=kennzeichen, inline=True)
     embed.add_field(name="Bearbeitet von", value=mitarbeiter.mention, inline=True)
     embed.set_image(url=bild.url)
-    zeit = datetime.datetime.now().strftime("%d.%m.%Y %H:%M")
+    zeit = datetime.datetime.now(BOT_TIMEZONE).strftime("%d.%m.%Y %H:%M")
     embed.set_footer(text=f"Dokumentations-ID: #340 • {zeit}")
-    await interaction.response.send_message(embed=embed)
+    await interaction.edit_original_response(embed=embed)
 
 
 @tree.command(name="stage", description="Erstellt eine Stage-Tuning Dokumentation")
@@ -121,6 +126,7 @@ async def stage(
     bild: discord.Attachment,
     stage: str
 ):
+    await interaction.response.defer(thinking=True)
     mitarbeiter = interaction.user
     embed = discord.Embed(title="Stage-Tuning Dokumentation", color=discord.Color.gold())
     embed.add_field(name="Kunde", value=kunde, inline=True)
@@ -128,9 +134,9 @@ async def stage(
     embed.add_field(name="Stage", value=stage, inline=True)
     embed.add_field(name="Bearbeitet von", value=mitarbeiter.mention, inline=True)
     embed.set_image(url=bild.url)
-    zeit = datetime.datetime.now().strftime("%d.%m.%Y %H:%M")
+    zeit = datetime.datetime.now(BOT_TIMEZONE).strftime("%d.%m.%Y %H:%M")
     embed.set_footer(text=f"Dokumentations-ID: #342 • {zeit}")
-    await interaction.response.send_message(embed=embed)
+    await interaction.edit_original_response(embed=embed)
 
 
 @tree.command(name="abmelden", description="Melde dich für einen Zeitraum ab")
