@@ -82,10 +82,14 @@ async def xenon(
     embed.add_field(name="Kennzeichen", value=kennzeichen, inline=True)
     embed.add_field(name="Xenon-Farbe", value=farbe, inline=True)
     embed.add_field(name="Bearbeitet von", value=mitarbeiter.mention, inline=False)
-    embed.set_image(url=bild.url)
+    datei = await bild.to_file()
+    embed.set_image(url=f"attachment://{datei.filename}")
     zeit = datetime.datetime.now(BOT_TIMEZONE).strftime("%d.%m.%Y %H:%M")
     embed.set_footer(text=f"Dokumentations-ID: #239 • {zeit}")
-    await interaction.edit_original_response(embed=embed)
+    try:
+        await interaction.edit_original_response(embed=embed, attachments=[datei])
+    finally:
+        datei.close()
 
 
 @tree.command(name="stance", description="Erstellt eine Stance-Tuning Dokumentation")
@@ -106,10 +110,14 @@ async def stance(
     embed.add_field(name="Kunde", value=kunde, inline=True)
     embed.add_field(name="Kennzeichen", value=kennzeichen, inline=True)
     embed.add_field(name="Bearbeitet von", value=mitarbeiter.mention, inline=True)
-    embed.set_image(url=bild.url)
+    datei = await bild.to_file()
+    embed.set_image(url=f"attachment://{datei.filename}")
     zeit = datetime.datetime.now(BOT_TIMEZONE).strftime("%d.%m.%Y %H:%M")
     embed.set_footer(text=f"Dokumentations-ID: #340 • {zeit}")
-    await interaction.edit_original_response(embed=embed)
+    try:
+        await interaction.edit_original_response(embed=embed, attachments=[datei])
+    finally:
+        datei.close()
 
 
 @tree.command(name="stage", description="Erstellt eine Stage-Tuning Dokumentation")
@@ -133,10 +141,14 @@ async def stage(
     embed.add_field(name="Kennzeichen", value=kennzeichen, inline=True)
     embed.add_field(name="Stage", value=stage, inline=True)
     embed.add_field(name="Bearbeitet von", value=mitarbeiter.mention, inline=True)
-    embed.set_image(url=bild.url)
+    datei = await bild.to_file()
+    embed.set_image(url=f"attachment://{datei.filename}")
     zeit = datetime.datetime.now(BOT_TIMEZONE).strftime("%d.%m.%Y %H:%M")
     embed.set_footer(text=f"Dokumentations-ID: #342 • {zeit}")
-    await interaction.edit_original_response(embed=embed)
+    try:
+        await interaction.edit_original_response(embed=embed, attachments=[datei])
+    finally:
+        datei.close()
 
 
 @tree.command(name="abmelden", description="Melde dich für einen Zeitraum ab")
